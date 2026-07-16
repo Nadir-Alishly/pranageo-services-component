@@ -6127,7 +6127,7 @@
             // 3. Bulletproof fallback: Recalculate instantly whenever a tab is clicked
             document.querySelectorAll('.tab').forEach(tab => {
               tab.addEventListener('click', () => {
-                // A tiny 20ms delay ensures the DOM has finished switching display toggles
+                // A tiny 20ms delay ensures the dom has finished switching display toggles
                 setTimeout(reportHeightToParent, 20);
               });
             });
