@@ -6103,49 +6103,44 @@
       (function() {
         console.log("DEBUG [Iframe]: Script initialized.");
         const container = document.querySelector('.container');
-
-        if (!container) {
-          console.error("DEBUG [Iframe]: CRITICAL - Could not find '.container' element!");
-          return;
-        }
+        if (!container) return;
 
         function reportHeightToParent() {
-          const currentHeight = container.scrollHeight;
-          console.log("DEBUG [Iframe]: Calculated height: " + currentHeight + "px. Dispatching to parent...");
+          const currentHeight = Math.ceil(container.getBoundingClientRect().height);
+          console.log("DEBUG [Iframe]: Calculated height: " + currentHeight + "px. Dispatching...");
 
-          // Using '*' during debugging to bypass any strict protocol/port origin blocks
           window.parent.postMessage({
             type: 'PRANAGEO_HEIGHT_CHANGE',
             height: currentHeight
           }, '*');
         }
 
-        // Start observing resizing
-        const observer = new ResizeObserver((entries) => {
-          for (let entry of entries) {
-            console.log("DEBUG [Iframe]: ResizeObserver registered height change: " + entry.contentRect.height + "px");
-          }
+        // Observe elements changing heights dynamically
+        const observer = new ResizeObserver(() => {
           reportHeightToParent();
         });
         observer.observe(container);
 
-        // Load fallbacks
-        window.addEventListener('load', () => {
-          console.log("DEBUG [Iframe]: Window loaded fully.");
-          reportHeightToParent();
+        // Initial backup sends
+        reportHeightToParent();
+        window.addEventListener('load', reportHeightToParent);
+
+        // FIX: Handshake listener - respond when the parent requests the height
+        window.addEventListener('message', (event) => {
+          if (event.data && event.data.type === 'REQUEST_HEIGHT') {
+            console.log("DEBUG [Iframe]: Received request from Parent. Responding with height...");
+            reportHeightToParent();
+          }
         });
 
-        // Tab click listeners with a slightly longer delay (150ms) to allow components to animate
+        // Tab click listeners
         document.querySelectorAll('.tab').forEach(tab => {
           tab.addEventListener('click', () => {
-            console.log("DEBUG [Iframe]: Tab clicked -> '" + tab.textContent.trim() + "'");
-            setTimeout(reportHeightToParent, 150);
+            setTimeout(reportHeightToParent, 80);
           });
         });
       })();
     </script>
-      </body>
-    </html>
 
 </body>
 
