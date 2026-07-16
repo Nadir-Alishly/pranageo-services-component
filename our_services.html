@@ -4613,7 +4613,7 @@
       /* ================================================================
          ░ PRANAGEO SOFTWARE SHOWCASE — INTERACTIVE LOGIC SCRIPT ░
          Auto-inits every ".sx". See the CONFIG block for tuning.
-      
+
          ARCHITECTURE OF THIS SCRIPT
          ----------------------------------------------------------------
          `state` holds what's currently focused: { panel, metric, node,
@@ -4622,7 +4622,7 @@
          should light up, dim, or animate — so the logic always reflects
          one coherent product relationship rather than several scripts
          fighting each other.
-      
+
          A small cancelable-timer helper (chain()) lets every multi-step
          sequence (the architecture light-chain, the deploy pipeline, the
          code flash) be cleanly interrupted the instant focus changes.
@@ -5342,7 +5342,7 @@
          rotating sphere to 2D, drawing: lat/long wireframe, a dotted
          "continent" density layer, glowing POI markers, scanning ring,
          and data particles flowing from the panel toward the globe.
-      
+
          ── CONFIG: the knobs you'll usually touch ──
          ================================================================ */
       (function () {
@@ -6098,6 +6098,33 @@
         document.querySelectorAll(".pl-pipeline").forEach(initPipeline);
       })();
     </script>
+
+    <script>
+      (function() {
+        function reportHeightToParent() {
+          // documentElement.scrollHeight calculates the total layout height accurately
+          const currentHeight = document.documentElement.scrollHeight;
+
+          // Sends the height data up to the parent window
+          window.parent.postMessage({
+            type: 'PRANAGEO_HEIGHT_CHANGE',
+            height: currentHeight
+          }, '*');
+        }
+
+        // Monitors elements changing heights instantly (e.g. Tab switching, display hidden/block toggles)
+        const observer = new ResizeObserver(() => {
+          reportHeightToParent();
+        });
+
+        // Start watching the body container
+        observer.observe(document.body);
+
+        // Fallback catch for when heavy images or CSS scripts finish rendering late
+        window.addEventListener('load', reportHeightToParent);
+      })();
+    </script>
+
 </body>
 
 </html>
