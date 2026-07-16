@@ -6100,30 +6100,41 @@
     </script>
 
     <script>
-      (function() {
-        function reportHeightToParent() {
-          // documentElement.scrollHeight calculates the total layout height accurately
-          const currentHeight = document.documentElement.scrollHeight;
+          (function() {
+            // Target the element that actually changes size freely when tabs toggle
+            const container = document.querySelector('.container');
+            if (!container) return;
 
-          // Sends the height data up to the parent window
-          window.parent.postMessage({
-            type: 'PRANAGEO_HEIGHT_CHANGE',
-            height: currentHeight
-          }, '*');
-        }
+            function reportHeightToParent() {
+              // Calculate the true height of the content block
+              const currentHeight = container.scrollHeight;
 
-        // Monitors elements changing heights instantly (e.g. Tab switching, display hidden/block toggles)
-        const observer = new ResizeObserver(() => {
-          reportHeightToParent();
-        });
+              window.parent.postMessage({
+                type: 'PRANAGEO_HEIGHT_CHANGE',
+                height: currentHeight
+              }, '*');
+            }
 
-        // Start watching the body container
-        observer.observe(document.body);
+            // 1. Observe the container element instead of the body
+            const observer = new ResizeObserver(() => {
+              reportHeightToParent();
+            });
+            observer.observe(container);
 
-        // Fallback catch for when heavy images or CSS scripts finish rendering late
-        window.addEventListener('load', reportHeightToParent);
-      })();
-    </script>
+            // 2. Initial load calculation
+            window.addEventListener('load', reportHeightToParent);
+
+            // 3. Bulletproof fallback: Recalculate instantly whenever a tab is clicked
+            document.querySelectorAll('.tab').forEach(tab => {
+              tab.addEventListener('click', () => {
+                // A tiny 20ms delay ensures the DOM has finished switching display toggles
+                setTimeout(reportHeightToParent, 20);
+              });
+            });
+          })();
+        </script>
+      </body>
+    </html>
 
 </body>
 
