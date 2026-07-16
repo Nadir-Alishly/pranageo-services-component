@@ -6100,39 +6100,50 @@
     </script>
 
     <script>
-          (function() {
-            // Target the element that actually changes size freely when tabs toggle
-            const container = document.querySelector('.container');
-            if (!container) return;
+      (function() {
+        console.log("DEBUG [Iframe]: Script initialized.");
+        const container = document.querySelector('.container');
 
-            function reportHeightToParent() {
-              // Calculate the true height of the content block
-              const currentHeight = container.scrollHeight;
+        if (!container) {
+          console.error("DEBUG [Iframe]: CRITICAL - Could not find '.container' element!");
+          return;
+        }
 
-              window.parent.postMessage({
-                type: 'PRANAGEO_HEIGHT_CHANGE',
-                height: currentHeight
-              }, '*');
-            }
+        function reportHeightToParent() {
+          const currentHeight = container.scrollHeight;
+          console.log("DEBUG [Iframe]: Calculated height: " + currentHeight + "px. Dispatching to parent...");
 
-            // 1. Observe the container element instead of the body
-            const observer = new ResizeObserver(() => {
-              reportHeightToParent();
-            });
-            observer.observe(container);
+          // Using '*' during debugging to bypass any strict protocol/port origin blocks
+          window.parent.postMessage({
+            type: 'PRANAGEO_HEIGHT_CHANGE',
+            height: currentHeight
+          }, '*');
+        }
 
-            // 2. Initial load calculation
-            window.addEventListener('load', reportHeightToParent);
+        // Start observing resizing
+        const observer = new ResizeObserver((entries) => {
+          for (let entry of entries) {
+            console.log("DEBUG [Iframe]: ResizeObserver registered height change: " + entry.contentRect.height + "px");
+          }
+          reportHeightToParent();
+        });
+        observer.observe(container);
 
-            // 3. Bulletproof fallback: Recalculate instantly whenever a tab is clicked
-            document.querySelectorAll('.tab').forEach(tab => {
-              tab.addEventListener('click', () => {
-                // A tiny 20ms delay ensures the dom has finished switching display toggles
-                setTimeout(reportHeightToParent, 20);
-              });
-            });
-          })();
-        </script>
+        // Load fallbacks
+        window.addEventListener('load', () => {
+          console.log("DEBUG [Iframe]: Window loaded fully.");
+          reportHeightToParent();
+        });
+
+        // Tab click listeners with a slightly longer delay (150ms) to allow components to animate
+        document.querySelectorAll('.tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            console.log("DEBUG [Iframe]: Tab clicked -> '" + tab.textContent.trim() + "'");
+            setTimeout(reportHeightToParent, 150);
+          });
+        });
+      })();
+    </script>
       </body>
     </html>
 
