@@ -119,6 +119,26 @@
     .nav-item.active { background: #fff; max-width: 250px; padding-right: 12px; }
     .nav-item.active .dot-core { background: #04001A; }
     .nav-item.active .dot-label { max-width: 500px; opacity: 1; margin-left: 6px; color: #04001A; }
+
+
+    @media (max-width: 768px) {
+      .slider-window {
+        position: relative;
+        aspect-ratio: 9 / 16;
+      }
+
+      #services-wrapper {
+        width: 100%;
+        height: 100%;
+        inset: 0;
+        transform: none !important;
+      }
+
+      .service-screen {
+        width: 100%;
+        height: 100%;
+      }
+    }
   </style>
 
   <script> // busy and zen
@@ -3457,7 +3477,10 @@
         type: "html",
         position_x: "0%",
         position_y: "0%",
+        m_position_x: "0%",
+        m_position_y: "0%",
         scale: "100%",
+        m_scale: "250%",
         source: `<img src="https://pranageo.com/staging/4017/wp-content/uploads/2026/06/Gemini_Generated_Image_7eeub77eeub77eeu.jpg"
                   style="-webkit-mask-image: linear-gradient(145deg, transparent 0%, black 80%);
                   mask-image: linear-gradient(145deg, transparent 0%, black 80%);" />`
@@ -3465,17 +3488,23 @@
       {
         service: 0,
         type: "html",
-        position_x: "10%",  /* 128px out from left edge */
-        position_y: "10%",  /* 230px down from top edge */
+        position_x: "10%",
+        position_y: "10%",
+        m_position_x: "10%",
+        m_position_y: "10%",
         scale: "100%",
+        m_scale: "100%",
         source: `<h1 style="font-size: 36px; font-weight: 800; color: #fff;">Custom Software & <br/> Web Applications</h1>`
       },
       {
         service: 0,
         type: "html",
-        position_x: "25%",   /* 768px out from left edge */
-        position_y: "30%",   /* 100px down from top edge */
+        position_x: "25%",
+        position_y: "30%",
+        m_position_x: "35%",
+        m_position_y: "25%",
         scale: "100%",
+        m_scale: "80%",
         source: `<product-multi-step-animation></product-multi-step-animation>`
       },
       {
@@ -3483,31 +3512,21 @@
         type: "html",
         position_x: "38%",
         position_y: "35%",
+        m_position_x: "65%",
+        m_position_y: "25%",
         scale: "20%",
+        m_scale: "75%",
         source: `<img src='https://pranageo.com/staging/4017/wp-content/uploads/2026/06/Logo-Wordmark-WHT-scaled.png'/>`
       },
-      // {
-      //   service: 0,
-      //   type: "html",
-      //   position_x: "50%",   /* 768px out from left edge */
-      //   position_y: "10%",   /* 100px down from top edge */
-      //   scale: "100%",
-      //   source: `<pranageo-cms-demo></pranageo-cms-demo>`
-      // },
       {
         service: 0,
         type: "html",
         position_x: "45%",
         position_y: "25%",
+        m_position_x: "0%",
+        m_position_y: "55%",
         scale: "120%",
-        source: `<img src='https://pranageo.com/staging/4017/wp-content/uploads/2026/06/f83da517-866c-431f-b4b3-85ee482f6201.png'/>`
-      },
-      {
-        service: 0,
-        type: "html",
-        position_x: "45%",
-        position_y: "25%",
-        scale: "120%",
+        m_scale: "120%",
         source: `<img src='https://pranageo.com/staging/4017/wp-content/uploads/2026/06/f83da517-866c-431f-b4b3-85ee482f6201.png'/>`
       },
       {
@@ -3515,7 +3534,10 @@
         type: "html",
         position_x: "0%",
         position_y: "0%",
+        m_position_x: "0%",
+        m_position_y: "0%",
         scale: "100%",
+        m_scale: "300%",
         source: `<img src="https://pranageo.com/staging/4017/wp-content/uploads/2026/06/Gemini_Generated_Image_36g8c936g8c936g8-scaled.jpg"
                   style="-webkit-mask-image: linear-gradient(145deg, transparent 0%, black 80%);
                   mask-image: linear-gradient(240deg, transparent 0%, black 80%);" />`
@@ -3525,7 +3547,10 @@
         type: "html",
         position_x: "10%",
         position_y: "10%",
+        m_position_x: "10%",
+        m_position_y: "10%",
         scale: "100%",
+        m_scale: "100%",
         source: `<h1 style="font-size: 36px; font-weight: 800; color: #fff;">Dashboard & <br/> Internal Tools</h1>`
       },
       {
@@ -3533,7 +3558,10 @@
         type: "html",
         position_x: "75%",
         position_y: "50%",
+        m_position_x: "50%",
+        m_position_y: "50%",
         scale: "80%",
+        m_scale: "50%",
         source: `<aq-anomaly-flow interval="5000" height="400" width="1200"></aq-anomaly-flow>`
       },
       {
@@ -3541,15 +3569,21 @@
         type: "html",
         position_x: "40%",
         position_y: "10%",
+        m_position_x: "10%",
+        m_position_y: "25%",
         scale: "80%",
-        source: `<ef-dashboard width="600" height="300" interval="4000"></ef-dashboard>`
+        m_scale: "50%",
+        source: `<ef-dashboard width="500" height="300" interval="4000"></ef-dashboard>`
       },
       {
         service: 1,
         type: "html",
         position_x: "0",
         position_y: "32%",
+        m_position_x: "0%",
+        m_position_y: "68%",
         scale: "65%",
+        m_scale: "100%",
         source: `<img style='-webkit-transform: scaleX(-1); transform: scaleX(-1);' src='https://pranageo.com/staging/4017/wp-content/uploads/2026/06/9fb39b1b-4d05-407a-9848-3f7339aabc95-scaled.webp'/>`
       },
       {
@@ -3557,7 +3591,10 @@
         type: "html",
         position_x: "64%",
         position_y: "55%",
+        m_position_x: "22%",
+        m_position_y: "52%",
         scale: "25%",
+        m_scale: "30%",
         source: `<img src='https://pranageo.com/staging/4017/wp-content/uploads/2026/06/92bfc86d-31fd-4261-a2b7-e9db4400da61-scaled.png'/>`
       },
       {
@@ -3565,7 +3602,10 @@
         type: "html",
         position_x: "80%",
         position_y: "15%",
+        m_position_x: "70%",
+        m_position_y: "25%",
         scale: "40%",
+        m_scale: "70%",
         source: `<img src='https://pranageo.com/staging/4017/wp-content/uploads/2026/06/510b1337-b8d2-4122-ba32-1a739f9cdd5a.png'/>`
       },
       {
@@ -3573,7 +3613,10 @@
         type: "html",
         position_x: "0%",
         position_y: "0%",
+        m_position_x: "0%",
+        m_position_y: "0%",
         scale: "100%",
+        m_scale: "300%",
         source: `<img src="https://pranageo.com/staging/4017/wp-content/uploads/2026/06/Gemini_Generated_Image_jrbsffjrbsffjrbs-scaled.webp"
                   style="-webkit-mask-image: linear-gradient(120deg, transparent 0, black 80%);
                   mask-image: linear-gradient(120deg, transparent 0, black 80%);" />`
@@ -3583,7 +3626,10 @@
         type: "html",
         position_x: "10%",
         position_y: "10%",
+        m_position_x: "10%",
+        m_position_y: "10%",
         scale: "100%",
+        m_scale: "100%",
         source: `<h1 style="font-size: 36px; font-weight: 800; color: #fff;">AI Powered Features</h1>`
       },
       {
@@ -3591,7 +3637,10 @@
         type: "html",
         position_x: "15%",
         position_y: "30%",
+        m_position_x: "10%",
+        m_position_y: "25%",
         scale: "100%",
+        m_scale: "60%",
         source: `<th-ai-quiz width="500" height="360"></th-ai-quiz>`
       },
       {
@@ -3599,7 +3648,10 @@
         type: "html",
         position_x: "40%",
         position_y: "20%",
+        m_position_x: "-20%",
+        m_position_y: "50%",
         scale: "130%",
+        m_scale: "140%",
         source: `<img style='-webkit-transform: scaleX(-1); transform: scaleX(-1);' src='https://pranageo.com/staging/4017/wp-content/uploads/2026/06/cde262d6-e3c3-43cd-ac4a-12e969ce2dbc-scaled.webp'/>`
       },
       {
@@ -3607,7 +3659,10 @@
         type: "html",
         position_x: "0%",
         position_y: "0%",
+        m_position_x: "0%",
+        m_position_y: "0%",
         scale: "100%",
+        m_scale: "320%",
         source: `<img src="https://pranageo.com/staging/4017/wp-content/uploads/2026/07/Gemini_Generated_Image_xw3ft3xw3ft3xw3f-scaled.webp"
                   style="-webkit-mask-image: linear-gradient(220deg, transparent 0, black 80%);
                   mask-image: linear-gradient(220deg, transparent 0, black 80%);" />`
@@ -3617,7 +3672,10 @@
         type: "html",
         position_x: "10%",
         position_y: "10%",
+        m_position_x: "10%",
+        m_position_y: "10%",
         scale: "100%",
+        m_scale: "100%",
         source: `<h1 style="font-size: 36px; font-weight: 800; color: #fff;">Website &<br\>Landing Pages</h1>`
       },
       {
@@ -3625,15 +3683,21 @@
         type: "html",
         position_x: "50%",
         position_y: "20%",
+        m_position_x: "10%",
+        m_position_y: "25%",
         scale: "100%",
-        source: `<af-flow width="540" height="400"></af-flow>`
+        m_scale: "70%",
+        source: `<af-flow width="500" height="400"></af-flow>`
       },
       {
         service: 3,
         type: "html",
         position_x: "0",
         position_y: "25%",
+        m_position_x: "-10%",
+        m_position_y: "50%",
         scale: "60%",
+        m_scale: "120%",
         source: `<img style='-webkit-transform: scaleX(-1); transform: scaleX(-1);' src='https://pranageo.com/staging/4017/wp-content/uploads/2026/07/de3b3bdc-ffb5-43b7-91a4-82c0116e378c.webp'/>`
       },
       {
@@ -3641,7 +3705,10 @@
         type: "html",
         position_x: "0%",
         position_y: "0%",
+        m_position_x: "0%",
+        m_position_y: "0%",
         scale: "100%",
+        m_scale: "300%",
         source: `<img src="https://pranageo.com/staging/4017/wp-content/uploads/2026/07/Gemini_Generated_Image_u19m5ju19m5ju19m.webp"
                   style="-webkit-mask-image: linear-gradient(120deg, transparent 0, black 80%);
                   mask-image: linear-gradient(120deg, transparent 0, black 80%);" />`
@@ -3651,7 +3718,10 @@
         type: "html",
         position_x: "10%",
         position_y: "10%",
+        m_position_x: "10%",
+        m_position_y: "10%",
         scale: "100%",
+        m_scale: "100%",
         source: `<h1 style="font-size: 36px; font-weight: 800; color: #fff;">Full System Development</h1>`
       },
       {
@@ -3659,7 +3729,10 @@
         type: "html",
         position_x: "15%",
         position_y: "30%",
+        m_position_x: "10%",
+        m_position_y: "30%",
         scale: "100%",
+        m_scale: "70%",
         source: `<th-devflow width="400" height="400" interval="3200"></th-devflow>`
       },
       {
@@ -3667,7 +3740,10 @@
         type: "html",
         position_x: "30%",
         position_y: "15%",
+        m_position_x: "-15%",
+        m_position_y: "50%",
         scale: "100%",
+        m_scale: "110%",
         source: `<img src='https://pranageo.com/staging/4017/wp-content/uploads/2026/07/fe2ec516-0ff8-466f-aca6-0197d227000a.webp'/>`
       },
     ];
@@ -3676,6 +3752,7 @@
     const wrapper = document.getElementById('services-wrapper');
     const navContainer = document.getElementById('nav-container');
     const sliderWindow = document.querySelector('.slider-window');
+    var isMobile = window.innerWidth <= 768;
 
     // Vector Scaling Formula
     function performVectorResize() {
@@ -3685,6 +3762,7 @@
 
       // Update the wrapper matrix transform
       wrapper.style.transform = `translate(-50%, -50%) scale(${calculatedScale})`;
+      isMobile = window.innerWidth <= 768;
     }
 
     // Connect window events to layout updater
@@ -3725,10 +3803,10 @@
 
       const moduleDiv = document.createElement('div');
       moduleDiv.className = 'service-module';
-      moduleDiv.style.left = mod.position_x;
-      moduleDiv.style.top = mod.position_y;
+      moduleDiv.style.left = !isMobile ? mod.position_x : mod.m_position_x;
+      moduleDiv.style.top = !isMobile ? mod.position_y : mod.m_position_y;
 
-      const scaleValue = parseFloat(mod.scale) / 100;
+      const scaleValue = !isMobile ? parseFloat(mod.scale) / 100 : parseFloat(mod.m_scale) / 100;
       moduleDiv.style.transform = `scale(${scaleValue})`;
 
       if (mod.type === 'image') {
