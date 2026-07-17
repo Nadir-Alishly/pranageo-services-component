@@ -6101,13 +6101,16 @@
 
     <script>
       (function() {
-        console.log("DEBUG [Iframe]: Script initialized.");
+        console.log("DEBUG [Iframe]: Resilient height script initialized.");
         const container = document.querySelector('.container');
-        if (!container) return;
+        if (!container) {
+          console.error("DEBUG [Iframe]: Container element not found!");
+          return;
+        }
 
         function reportHeightToParent() {
           const currentHeight = Math.ceil(container.getBoundingClientRect().height);
-          console.log("DEBUG [Iframe]: Calculated height: " + currentHeight + "px. Dispatching...");
+          console.log("DEBUG [Iframe]: Dispatching height: " + currentHeight + "px");
 
           window.parent.postMessage({
             type: 'PRANAGEO_HEIGHT_CHANGE',
@@ -6115,25 +6118,28 @@
           }, '*');
         }
 
-        // Observe elements changing heights dynamically
+        // A. Observe elements resizing dynamically
         const observer = new ResizeObserver(() => {
           reportHeightToParent();
         });
         observer.observe(container);
 
-        // Initial backup sends
-        reportHeightToParent();
+        // B. FIX THE RACE CONDITION: Poll the height every 500ms for the first 3 seconds.
+        // This ensures the parent catches the message even if it loads slower than the iframe.
+        let pollCount = 0;
+        const startupPoll = setInterval(() => {
+          reportHeightToParent();
+          pollCount++;
+          if (pollCount >= 6) { // 6 polls * 500ms = 3 seconds
+            clearInterval(startupPoll);
+            console.log("DEBUG [Iframe]: Startup polling finished.");
+          }
+        }, 500);
+
+        // C. Fallbacks
         window.addEventListener('load', reportHeightToParent);
 
-        // FIX: Handshake listener - respond when the parent requests the height
-        window.addEventListener('message', (event) => {
-          if (event.data && event.data.type === 'REQUEST_HEIGHT') {
-            console.log("DEBUG [Iframe]: Received request from Parent. Responding with height...");
-            reportHeightToParent();
-          }
-        });
-
-        // Tab click listeners
+        // D. Tab click listeners
         document.querySelectorAll('.tab').forEach(tab => {
           tab.addEventListener('click', () => {
             setTimeout(reportHeightToParent, 80);
