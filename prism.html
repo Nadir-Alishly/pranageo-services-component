@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soul · Edu · Tech — Community Prism</title>
+<style>
+
+/* ============================================================
+   THE COMPONENT
+   ============================================================ */
+.prism-component {
+  /* --- SIZE: cap here to resize the whole prism --- */
+  width: 100%;
+  max-width: 580px;
+  aspect-ratio: 1 / 1.05;
+  position: relative;
+  background: transparent;
+
+  /* --- COLOR TOKENS --- */
+  --c-cyan:   #6fe9ff;
+  --c-blue:   #5b8dff;
+  --c-violet: #a06bff;
+  --c-pink:   #ff8fd0;
+  --c-label:  rgba(230, 238, 255, 0.95);   /* label text color */
+
+  /* --- GLOW INTENSITY: raise/lower blur strength via filters below --- */
+}
+
+.prism-component svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* Ambient motion: slow float + gentle breathing (no cursor tilt) */
+.float-group  { animation: floatY 9s ease-in-out infinite; transform-origin: 50% 55%; }
+.breathe-group{ animation: breathe 14s ease-in-out infinite; transform-origin: 50% 55%; }
+@keyframes floatY  { 0%,100% { transform: translateY(0) }  50% { transform: translateY(-13px) } }
+@keyframes breathe { 0%,100% { transform: scale(1) }       50% { transform: scale(1.014) } }
+
+/* Community core heartbeat */
+.core-pulse {
+  animation: heartbeat 4.2s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes heartbeat {
+  0%,100% { transform: scale(1);    opacity: 0.92; }
+  12%     { transform: scale(1.10); opacity: 1; }
+  24%     { transform: scale(1.02); opacity: 0.95; }
+  36%     { transform: scale(1.07); opacity: 1; }
+  60%     { transform: scale(1);    opacity: 0.92; }
+}
+
+/* ---- LABELS: clearly visible by default ----
+   --label-idle controls resting visibility (0–1). */
+.prism-component { --label-idle: 0.9; }
+.corner-label {
+  fill: var(--c-label);
+  font-size: 14px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: var(--label-idle);
+  transition: opacity .4s ease, filter .4s ease;
+  text-anchor: middle;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(10, 8, 30, 0.55);   /* soft dark halo for readability */
+  stroke-width: 3px;
+}
+.corner-label.is-near { opacity: 1; filter: drop-shadow(0 0 8px currentColor); }
+
+.core-label {
+  fill: var(--c-label);
+  font-size: 11px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0.85;
+  text-anchor: middle;
+  transition: opacity .4s ease, filter .4s ease;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(10, 8, 30, 0.55);
+  stroke-width: 3px;
+}
+.core-label.is-near { opacity: 1; filter: drop-shadow(0 0 8px #cfe2ff); }
+
+/* Icon badges at the corners */
+.corner-badge circle.badge-bg {
+  fill: rgba(30, 30, 70, 0.35);
+  stroke: rgba(200, 215, 255, 0.35);
+  stroke-width: 1;
+  transition: stroke .4s ease;
+}
+.corner-badge .badge-icon {
+  fill: none;
+  stroke: rgba(225, 235, 255, 0.9);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke .4s ease, filter .4s ease;
+}
+.corner-badge.is-near circle.badge-bg { stroke: currentColor; }
+.corner-badge.is-near .badge-icon     { stroke: #ffffff; filter: drop-shadow(0 0 6px currentColor); }
+
+@media (prefers-reduced-motion: reduce) {
+  .float-group, .breathe-group, .core-pulse { animation: none; }
+}
+@media (max-width: 480px) {
+  .corner-label { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="prism-component" id="prismRoot">
+  <svg viewBox="0 0 600 630" aria-label="Crystal prism: Soul, Edu and Tech connected through Community">
+    <defs>
+      <!-- Edge gradient: pink (top) → violet → cyan (bottom right), like the reference -->
+      <linearGradient id="edgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"  stop-color="#ff8fd0"/>
+        <stop offset="45%" stop-color="#a06bff"/>
+        <stop offset="100%" stop-color="#6fe9ff"/>
+      </linearGradient>
+      <linearGradient id="edgeGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"  stop-color="#6fe9ff"/>
+        <stop offset="55%" stop-color="#5b8dff"/>
+        <stop offset="100%" stop-color="#ff8fd0"/>
+      </linearGradient>
+
+      <!-- Glass face fill -->
+      <linearGradient id="glassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"   stop-color="rgba(150,190,255,0.09)"/>
+        <stop offset="55%"  stop-color="rgba(150,120,255,0.045)"/>
+        <stop offset="100%" stop-color="rgba(255,150,215,0.07)"/>
+      </linearGradient>
+
+      <!-- Core radial glow -->
+      <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="rgba(255,255,255,0.95)"/>
+        <stop offset="35%"  stop-color="rgba(150,185,255,0.5)"/>
+        <stop offset="70%"  stop-color="rgba(160,107,255,0.2)"/>
+        <stop offset="100%" stop-color="rgba(160,107,255,0)"/>
+      </radialGradient>
+
+      <!-- GLOW FILTERS: raise stdDeviation for stronger neon -->
+      <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="3.5" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="bigGlow" x="-120%" y="-120%" width="340%" height="340%">
+        <feGaussianBlur stdDeviation="9" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <g class="float-group">
+      <g class="breathe-group">
+
+        <!-- ================= CRYSTAL BODY =================
+             Outer triangle:  (300,84) (88,452) (512,452)
+             Inner triangle:  (300,168) (162,408) (438,408)
+             The gap between them + corner connector lines
+             creates the beveled crystal-frame look.        -->
+
+        <!-- Faint halo circle behind the prism (like reference 2) -->
+        <circle cx="300" cy="330" r="205" fill="none"
+                stroke="rgba(180,200,255,0.10)" stroke-width="1"/>
+
+        <!-- Glass fill of the whole prism -->
+        <polygon points="300,84 88,452 512,452" fill="url(#glassGrad)"/>
+
+        <!-- Bevel facets: the "thick glass rim" between outer and inner triangles -->
+        <g fill="rgba(170,190,255,0.05)" stroke="rgba(200,215,255,0.16)" stroke-width="0.8">
+          <polygon points="300,84 88,452 162,408 300,168"/>          <!-- left rim facet -->
+          <polygon points="300,84 512,452 438,408 300,168"/>         <!-- right rim facet -->
+          <polygon points="88,452 512,452 438,408 162,408"/>         <!-- bottom rim facet -->
+        </g>
+
+        <!-- OUTER frame: gradient neon edge -->
+        <polygon id="outerTri" points="300,84 88,452 512,452"
+                 fill="none" stroke="url(#edgeGrad)" stroke-width="2.2"
+                 stroke-linejoin="round" filter="url(#softGlow)"/>
+
+        <!-- INNER frame: brighter, like the glowing inner triangle in the crystal -->
+        <polygon id="innerTri" points="300,168 162,408 438,408"
+                 fill="rgba(140,160,255,0.03)" stroke="url(#edgeGrad2)" stroke-width="2.6"
+                 stroke-linejoin="round" filter="url(#softGlow)"/>
+
+        <!-- Corner connector facet lines (outer vertex → inner vertex) -->
+        <g stroke="rgba(220,230,255,0.45)" stroke-width="1.2">
+          <line x1="300" y1="84"  x2="300" y2="168"/>
+          <line x1="88"  y1="452" x2="162" y2="408"/>
+          <line x1="512" y1="452" x2="438" y2="408"/>
+        </g>
+
+        <!-- Inner facet spokes: inner vertices → center (prism depth) -->
+        <g stroke="rgba(190,205,255,0.20)" stroke-width="1">
+          <line x1="300" y1="168" x2="300" y2="330"/>
+          <line x1="162" y1="408" x2="300" y2="330"/>
+          <line x1="438" y1="408" x2="300" y2="330"/>
+        </g>
+
+        <!-- Static white bevel highlights: bright slivers on edges (crystal glints) -->
+        <g stroke="rgba(255,255,255,0.75)" stroke-width="2" stroke-linecap="round" filter="url(#softGlow)">
+          <line x1="300" y1="94"  x2="268" y2="150"/>   <!-- top-left glint -->
+          <line x1="452" y1="352" x2="492" y2="420"/>   <!-- right glint -->
+          <line x1="150" y1="452" x2="230" y2="452"/>   <!-- bottom glint -->
+          <line x1="352" y1="260" x2="392" y2="330" stroke-opacity="0.5"/> <!-- inner glint -->
+        </g>
+
+        <!-- ===== Traveling edge lights: one per edge, moving simultaneously
+               from each corner along the outer frame (JS) ===== -->
+        <circle class="edge-runner" r="3.4" fill="#ffffff" filter="url(#bigGlow)"/>
+        <circle class="edge-runner" r="3.4" fill="#ffffff" filter="url(#bigGlow)"/>
+        <circle class="edge-runner" r="3.4" fill="#ffffff" filter="url(#bigGlow)"/>
+
+        <!-- ===== Energy layer: corner→core streams, waves, pulses (JS) ===== -->
+        <g id="waveLayer"></g>
+
+        <!-- ================= COMMUNITY CORE ================= -->
+        <g class="core-pulse" id="coreGroup">
+          <circle cx="300" cy="330" r="56" fill="url(#coreGrad)"/>
+          <circle cx="300" cy="330" r="13" fill="rgba(255,255,255,0.92)" filter="url(#bigGlow)"/>
+          <circle cx="300" cy="330" r="25" fill="none"
+                  stroke="rgba(205,222,255,0.4)" stroke-width="1"/>
+        </g>
+        <text class="core-label" id="labelCore" x="300" y="398">Community</text>
+
+        <!-- ================= CORNER BADGES + ICONS =================
+             Icons are simple stroke paths: leaf = Soul,
+             open book = Edu, laptop = Tech.
+             Move/resize a badge by editing its transform.      -->
+
+        <!-- SOUL (top) — leaf icon -->
+        <g class="corner-badge" id="badge0" style="color:#ff8fd0" transform="translate(300,84)">
+          <circle class="badge-bg" r="24"/>
+          <g class="badge-icon" transform="translate(-11,-11) scale(0.92)">
+            <!-- leaf outline + midrib -->
+            <path d="M4 20 C4 10, 12 3, 21 3 C21 13, 13 20, 4 20 Z"/>
+            <path d="M4 20 C9 14, 14 9, 19 5"/>
+          </g>
+        </g>
+        <text class="corner-label" id="label0" x="300" y="34">Soul</text>
+
+        <!-- EDU (bottom-left) — open book icon -->
+        <g class="corner-badge" id="badge1" style="color:#a06bff" transform="translate(88,452)">
+          <circle class="badge-bg" r="24"/>
+          <g class="badge-icon" transform="translate(-12,-10)">
+            <path d="M0 2 C4 0, 8 0, 12 2 L12 18 C8 16, 4 16, 0 18 Z"/>
+            <path d="M24 2 C20 0, 16 0, 12 2 L12 18 C16 16, 20 16, 24 18 Z"/>
+          </g>
+        </g>
+        <text class="corner-label" id="label1" x="88" y="512">Edu</text>
+
+        <!-- TECH (bottom-right) — laptop icon -->
+        <g class="corner-badge" id="badge2" style="color:#6fe9ff" transform="translate(512,452)">
+          <circle class="badge-bg" r="24"/>
+          <g class="badge-icon" transform="translate(-12,-9)">
+            <rect x="3" y="0" width="18" height="12" rx="1.5"/>
+            <path d="M0 16 L24 16 M8 16 L8 14 L16 14 L16 16"/>
+          </g>
+        </g>
+        <text class="corner-label" id="label2" x="512" y="512">Tech</text>
+
+        <!-- ================= AMBIENT PARTICLES (JS) ================= -->
+        <g id="particleLayer"></g>
+
+      </g>
+    </g>
+  </svg>
+</div>
+
+<script>
+(() => {
+  /* ==========================================================
+     CONFIG — everything tunable
+     ========================================================== */
+  const CONFIG = {
+    particleCount: 8,          // ambient drifting particles (keep low)
+    particleDrift: 0.15,       // ambient drift speed
+    cursorRadius: 240,         // px (SVG units) of cursor influence
+    rippleStrength: 20,        // particle push distance near cursor
+    edgeLoopSeconds: 6,        // time for edge lights to run one lap
+    streamEverySeconds: 1.1,   // interval between corner→core energy dots
+    streamTravelMs: 1700,      // travel time of a corner→core dot
+    waveEverySeconds: 4.5,     // interval between core ripple rings
+    labelNearDistance: 95,     // cursor distance that highlights a corner
+    coreNearDistance: 85       // cursor distance that boosts the core glow
+  };
+
+  const svgNS = "http://www.w3.org/2000/svg";
+  const root = document.getElementById("prismRoot");
+  const svg = root.querySelector("svg");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Geometry (must match the SVG polygons)
+  const V = [ {x:300,y:84}, {x:88,y:452}, {x:512,y:452} ];   // outer corners
+  const CENTER = { x:300, y:330 };
+  const cornerColors = ["#ff8fd0", "#a06bff", "#6fe9ff"];
+
+  /* ---------- Pointer → SVG coordinates ---------- */
+  let cursor = null;
+  root.addEventListener("pointermove", e => {
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX; pt.y = e.clientY;
+    cursor = pt.matrixTransform(svg.getScreenCTM().inverse());
+  });
+  root.addEventListener("pointerleave", () => { cursor = null; });
+
+  /* ---------- Ambient particles ---------- */
+  const particleLayer = document.getElementById("particleLayer");
+  const particles = [];
+  for (let i = 0; i < CONFIG.particleCount; i++) {
+    const el = document.createElementNS(svgNS, "circle");
+    el.setAttribute("r", 1 + Math.random() * 1.7);
+    el.setAttribute("fill", cornerColors[i % 3]);
+    el.setAttribute("opacity", 0.3 + Math.random() * 0.3);
+    particleLayer.appendChild(el);
+    particles.push({
+      el,
+      hx: 80 + Math.random() * 440,
+      hy: 60 + Math.random() * 480,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.4 + Math.random() * 0.6,
+      amp: 8 + Math.random() * 13
+    });
+  }
+
+  /* ---------- Edge runners: three lights, one starting at each corner,
+                all moving around the outer frame simultaneously ---------- */
+  const perimeter = [];
+  {
+    let total = 0;
+    for (let i = 0; i < 3; i++) {
+      const a = V[i], b = V[(i + 1) % 3];
+      const len = Math.hypot(b.x - a.x, b.y - a.y);
+      perimeter.push({ a, b, start: total, len });
+      total += len;
+    }
+    perimeter.total = total;
+  }
+  function pointOnPerimeter(t) {          // t in [0,1)
+    const d = ((t % 1) + 1) % 1 * perimeter.total;
+    for (const seg of perimeter) {
+      if (d <= seg.start + seg.len) {
+        const k = (d - seg.start) / seg.len;
+        return { x: seg.a.x + (seg.b.x - seg.a.x) * k,
+                 y: seg.a.y + (seg.b.y - seg.a.y) * k };
+      }
+    }
+    return V[0];
+  }
+  const runners = [...svg.querySelectorAll(".edge-runner")];
+  const runnerOffsets = [0, 1/3, 2/3];    // start each light at a different corner
+  const lastHit = [-1, -1, -1];
+
+  /* ---------- Expanding-ring helper ---------- */
+  const waveLayer = document.getElementById("waveLayer");
+  function ring(x, y, color, r0, r1, ms) {
+    const el = document.createElementNS(svgNS, "circle");
+    el.setAttribute("cx", x); el.setAttribute("cy", y);
+    el.setAttribute("r", r0);
+    el.setAttribute("fill", "none");
+    el.setAttribute("stroke", color);
+    el.setAttribute("stroke-width", 1.4);
+    waveLayer.appendChild(el);
+    const t0 = performance.now();
+    (function step(now) {
+      const k = Math.min(1, (now - t0) / ms);
+      el.setAttribute("r", r0 + (r1 - r0) * k);
+      el.setAttribute("opacity", 0.75 * (1 - k));
+      if (k < 1) requestAnimationFrame(step); else el.remove();
+    })(t0);
+  }
+
+  /* ---------- Energy streams: dots flowing from EACH corner into the core.
+                Every interval, all three corners emit together. ---------- */
+  function emitStreams() {
+    for (let i = 0; i < 3; i++) {
+      const dot = document.createElementNS(svgNS, "circle");
+      dot.setAttribute("r", 2.6);
+      dot.setAttribute("fill", cornerColors[i]);
+      dot.setAttribute("filter", "url(#softGlow)");
+      waveLayer.appendChild(dot);
+      const t0 = performance.now(), ms = CONFIG.streamTravelMs;
+      (function step(now) {
+        const k = Math.min(1, (now - t0) / ms);
+        const e = k * k * (3 - 2 * k);         // smoothstep easing
+        dot.setAttribute("cx", V[i].x + (CENTER.x - V[i].x) * e);
+        dot.setAttribute("cy", V[i].y + (CENTER.y - V[i].y) * e);
+        dot.setAttribute("opacity", 0.9 * (1 - k * 0.55));
+        if (k < 1) requestAnimationFrame(step);
+        else { dot.remove(); }
+      })(t0);
+    }
+    // core absorbs the energy → small ripple
+    setTimeout(() => ring(CENTER.x, CENTER.y, "rgba(220,230,255,0.8)", 14, 34, 700),
+               CONFIG.streamTravelMs);
+  }
+  if (!reduced) setInterval(emitStreams, CONFIG.streamEverySeconds * 1000);
+
+  /* ---------- Occasional wide core ripple toward the corners ---------- */
+  if (!reduced) setInterval(() => {
+    ring(CENTER.x, CENTER.y, "rgba(160,140,255,0.6)", 30, 190, 2200);
+  }, CONFIG.waveEverySeconds * 1000);
+
+  /* ---------- Proximity references ---------- */
+  const badges = [0,1,2].map(i => document.getElementById("badge" + i));
+  const labels = [0,1,2].map(i => document.getElementById("label" + i));
+  const labelCore = document.getElementById("labelCore");
+  const coreGroup = document.getElementById("coreGroup");
+
+  /* ---------- Main loop ---------- */
+  const start = performance.now();
+  function frame(now) {
+    const t = (now - start) / 1000;
+
+    // edge lights: three runners, corner pulse on arrival
+    if (!reduced) {
+      const base = t / CONFIG.edgeLoopSeconds;
+      runners.forEach((r, j) => {
+        const p = pointOnPerimeter(base + runnerOffsets[j]);
+        r.setAttribute("cx", p.x);
+        r.setAttribute("cy", p.y);
+        for (let i = 0; i < 3; i++) {
+          if (Math.hypot(p.x - V[i].x, p.y - V[i].y) < 9 && lastHit[j] !== i) {
+            lastHit[j] = i;
+            ring(V[i].x, V[i].y, cornerColors[i], 24, 44, 800);
+          }
+        }
+      });
+    }
+
+    // ambient particles + cursor ripple
+    for (const p of particles) {
+      let x = p.hx + Math.cos(t * p.speed * CONFIG.particleDrift * 4 + p.phase) * p.amp;
+      let y = p.hy + Math.sin(t * p.speed * CONFIG.particleDrift * 3 + p.phase * 1.3) * p.amp;
+      if (cursor) {
+        const dx = x - cursor.x, dy = y - cursor.y;
+        const d = Math.hypot(dx, dy);
+        if (d < CONFIG.cursorRadius && d > 0.01) {
+          const push = (1 - d / CONFIG.cursorRadius) * CONFIG.rippleStrength;
+          x += (dx / d) * push;
+          y += (dy / d) * push;
+        }
+      }
+      p.el.setAttribute("cx", x);
+      p.el.setAttribute("cy", y);
+    }
+
+    // proximity: highlight nearest corner badge/label + core
+    if (cursor) {
+      for (let i = 0; i < 3; i++) {
+        const d = Math.hypot(cursor.x - V[i].x, cursor.y - V[i].y);
+        const near = d < CONFIG.labelNearDistance;
+        badges[i].classList.toggle("is-near", near);
+        labels[i].classList.toggle("is-near", near);
+      }
+      const dc = Math.hypot(cursor.x - CENTER.x, cursor.y - CENTER.y);
+      const nearCore = dc < CONFIG.coreNearDistance;
+      labelCore.classList.toggle("is-near", nearCore);
+      coreGroup.style.filter = nearCore ? "brightness(1.5)" : "";
+    } else {
+      badges.forEach(b => b.classList.remove("is-near"));
+      labels.forEach(l => l.classList.remove("is-near"));
+      labelCore.classList.remove("is-near");
+      coreGroup.style.filter = "";
+    }
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
