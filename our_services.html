@@ -51,7 +51,7 @@
       font-size: 16px;
       position: relative;
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 32px;
     }
 
     .section-tag::before {
@@ -3573,8 +3573,8 @@
 
 <body>
   <div class="container">
-    <div class="section-tag">What We Build</div>
-    <h1>Our Services</h1>
+    <div class="section-tag">Our Services</div>
+    <!--<h1>Our Services</h1>-->
 
     <div class="tabs">
       <div class="tab">Custom Software &amp; Web Applications</div>
@@ -3586,7 +3586,7 @@
 
     <div class="hero">
       <div class="left-column">
-        <div class="service-title"></div>
+        <!--<div class="service-title"></div>-->
         <div class="description"></div>
         <div class="features"></div>
       </div>
@@ -4490,7 +4490,7 @@
         }
       };
 
-      const serviceTitle = document.querySelector('.service-title');
+      //const serviceTitle = document.querySelector('.service-title');
       const description = document.querySelector('.description');
       const featuresContainer = document.querySelector('.features');
       const fullSystemVisual = document.querySelector('.full-system-visual');
@@ -4509,7 +4509,7 @@
 
       function renderService(name) {
         const service = services[name];
-        serviceTitle.textContent = service.title;
+        //serviceTitle.textContent = service.title;
         description.textContent = service.description;
         featuresContainer.innerHTML = service.features.map(item => `
   <div class="feature">
